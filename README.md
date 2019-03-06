@@ -46,6 +46,27 @@ sudo mv <client-name>.ovpn /etc/openvpv
 
 Note: the current vpn setup does not allow internet access through the vpn and setting up a split-tunnel with AllJoyn is difficult. Ensure you have updated all the things you need to update before starting the OpenVPN client.
 
+### EPRI-CTA2045
+``` console
+cd ~/src
+git clone https://github.com/epri-dev/CTA-2045-UCM-CPP-Library
+cd CTA-2045-UCM-CPP-Library
+```
+#### Build
+``` console
+mkdir -p build/debug
+cd build/debug
+cmake -DCMAKE_BUILD_TYPE=Debug -DSAMPLE=1 -DTEST=1 ../../
+make
+```
+
+#### Test
+``` console
+./testcea2045
+```
+
+If the response is All tests passed, then you are ready to move forward. If not, please reference the EPRI documentation for the CTA-2045 repository. 
+
 ### AllJoyn
 First clone the AllJoyn repository into your /src folder. The run the following "scons" command that corresponds to your processor. 
 ``` console
