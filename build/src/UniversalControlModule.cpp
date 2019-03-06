@@ -299,12 +299,8 @@ void UniversalControlModule::processNakReceived (
 // -
 void UniversalControlModule::processOperationalStateReceived (
 	cea2045::cea2045Basic *message) {
-	op_state_ = (unsigned int)message->opCode1;
+	op_state_ = (unsigned int)message->opCode2;
 
-	// TODO(TS): this is just for debugging and should be removed later
-	std::cout << "Operational State: " 
-		<< "\tOpCode #1 = " << message->opCode1 
-		<< "\tOpCode #2 = " << message->opCode2 << std::endl;
 }  // end Process Operation State Received
 
 // Process App Ack Received
