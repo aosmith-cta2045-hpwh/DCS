@@ -206,12 +206,6 @@ void DistributedEnergyResource::SetLogIncrement (unsigned int inc) {
     log_inc_ = inc;
 }  // end Set Log Increment
 
-// Get Rated Export Watts
-// - get the control watt value available to export to the grid
-unsigned int DistributedEnergyResource::GetExportWatts () {
-    return export_watts_;
-}  // end Get Rated Export Watts
-
 // Get Rated Export Power
 // - get the rated watt value available to export to the grid
 unsigned int DistributedEnergyResource::GetRatedExportPower () {
@@ -243,12 +237,6 @@ unsigned int DistributedEnergyResource::GetExportEnergy () {
 unsigned int DistributedEnergyResource::GetExportRamp () {
     return export_ramp_;
 }  // end Get Export Ramp
-
-// Get Rated Import Watts
-// - get the control watt value available to export to the grid
-unsigned int DistributedEnergyResource::GetImportWatts () {
-    return import_watts_;
-}  // end Get Rated Import Watts
 
 // Get Rated Import Power
 // - get the rated watt value available to import from the grid

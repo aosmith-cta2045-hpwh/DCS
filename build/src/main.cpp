@@ -41,6 +41,7 @@
 #include "include/Operator.h"
 #include "include/SmartGridDevice.h"
 #include "include/ServerListener.h"
+#include "include/UniversalControlModule.h"
 #include "include/tsu.h"
 #include "include/aj_utility.h"
 
@@ -212,9 +213,11 @@ int main (int argc, char** argv) {
     tsu::config_map configs = tsu::MapConfigFile (arguments["config"]);
 
     cout << "\tCreating Distributed Energy Resource\n";
-    // ~ reference DistributedEnergyResource and BatteryEnergyStorageSystem
+    // ~ reference DistributedEnergyResource
     DistributedEnergyResource* der_ptr 
-        = new DistributedEnergyResource(configs["DER"]);
+    	= new DistributedEnergyResource(configs["DER"]);
+
+    UniversalControlModule ucm();
 
     cout << "\tCreating Operator\n";
     // ~ reference Operator.h
