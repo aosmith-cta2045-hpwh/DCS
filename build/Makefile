@@ -18,7 +18,7 @@ OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 ifeq ($(CPU), x86)
 	CPUFLAGS := -m32
 elseif ($(CPU), arm)
-	CPUFLAGS :=
+	CPUFLAGS := -lwiringPi
 else
 	CPUFLAGS :=
 endif
@@ -31,6 +31,14 @@ INC := -I src/include
 CFLAGS += -DROUTER
 LIB += -L$(AJ_LIB) -lalljoyn -lajrouter
 INC += -I$(AJ_INC)
+
+# CTA2045 Requirments
+LIB += -L$(CTA_LIB) -lcea2045
+INC += -I$(CTA_INC)
+
+# WiringPi Requirments
+LIB += -L/usr/lib -lwiringPi
+INC += -I/usr/include
 
 $(TARGET) : $(OBJECTS)
 	@mkdir -p $(TARGETDIR)
