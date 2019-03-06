@@ -30,6 +30,7 @@ class DistributedEnergyResource {
         void SetRatedExportPower (unsigned int watts);
         void SetRatedExportEnergy (unsigned int watt_hours);
         void SetExportRamp (unsigned int watts_per_second);
+        unsigned int GetExportWatts ();
         unsigned int GetRatedExportPower ();
         unsigned int GetExportPower ();
         unsigned int GetRatedExportEnergy ();
@@ -42,6 +43,7 @@ class DistributedEnergyResource {
         void SetRatedImportPower (unsigned int watts);
         void SetRatedImportEnergy (unsigned int watt_hours);
         void SetImportRamp (unsigned int watts_per_second);
+        unsigned int GetImportWatts ();
         unsigned int GetRatedImportPower ();
         unsigned int GetImportPower ();
         unsigned int GetRatedImportEnergy ();

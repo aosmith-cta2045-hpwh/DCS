@@ -1,13 +1,37 @@
 # DCS (Distributed Control System)
+If you are new to github, then you should read the following link to get an understanding of the workflow required.
+
+https://github.com/emesene/emesene/wiki/GitHowTo#what-should-i-do-if-im-in-a-bad-situation
 
 ## Dependancies
 ### Linux Environment
 ``` console
 sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install git build-essential gcc g++ cmake make xsltproc scons doxygen graphviz libgtk2.0-dev libssl-dev libxml2-dev libcap-dev
-mkdir ~/dev ~/src
+sudo apt-get install tmux git build-essential gcc g++ cmake make xsltproc scons doxygen graphviz libgtk2.0-dev libssl-dev libxml2-dev libcap-dev
+mkdir ~/src ~/dev ~/dev/LOGS
 ```
+
+### Fake Hardware Clock
+``` console
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install fake_hwclock
+sudo systemctl enable fake-hwclock.service
+sudo systemctl start fake-hwclock.service
+sudo nano /etc/cron.hourly/fake-hwclock
+        add "fake-hwclock load force" above the save function. Don't include quotes.
+``
+
+
+### Hostname
+To make connecting remotely from the local network easier, update the hostname. Modify the hostname under (2. Network Options), (N1 Hostname) in raspi-config.
+``` console
+sudo raspi-config
+```
+Once the hostname has been set use the following tutorial to connect remotelying using putty. Instead of using the IP Address to connect, simplty type the hostname you just used followed by ".local" for putty to find the raspberry pi. 
+
+https://www.raspberrypi.org/documentation/remote-access/ssh/windows.md
 
 ### OpenVPN
 The DCS used OpenVPN to extend AllJoyn's routing capability to the wide area network. It is not an ideal solution, but it is relativly easy to setup and can handle a couple hundred clients. Request <client>.ovpn file link through PSU powerlab google drive. In the commands below replace <path> and <client-name> with the actual path to the ovpn file and the actual ovpn file name. 
@@ -52,27 +76,6 @@ cd ../bin/samples
 ./AboutService
 ```
 If the BusAttachment/AboutObj succeed, then the installation should be fine.
-
-### EPRI-CTA2045
-``` console
-cd ~/src
-git clone https://github.com/epri-dev/CTA-2045-UCM-CPP-Library
-cd CTA-2045-UCM-CPP-Library
-```
-#### Build
-``` console
-mkdir -p build/debug
-cd build/debug
-cmake -DCMAKE_BUILD_TYPE=Debug -DSAMPLE=1 -DTEST=1 ../../
-make
-```
-
-#### Test
-``` console
-./testcea2045
-```
-
-If the response is All tests passed, then you are ready to move forward. If not, please reference the EPRI documentation for the CTA-2045 repository. 
 
 ## Install
 ``` console
@@ -124,9 +127,30 @@ The program can be controlled three ways:
 > p             print properties
 ```
 
-## Class UML
-It should be noted that this repository does not implement CTA2045, but creates the classes to implement. The classes can be seen below. The upstream AOSmith-EWH repository implements these classes to create a physcial DCS for an AOSmith water heater.
+## Setup DCS Service
+Once all dependencies have been satisfied and the DCS will run using the build-run.sh script you can set it as a service that will restart on crash and start on boot. open the dcs.service file and modify paths for the the following:
+1. ExecStart
+2. ExecStop
+3. WorkingDirectory
 
-<p align="center">
-  <img src="CTA2045_Class_UML.png" alt="Class UML">
-</p>
+### Copy the service file into the systemd folder
+``` console
+cd ~/dev/DCS/tools
+sudo cp dcs.service /etc/systemd/system/dcs.service
+```
+
+### Start the service
+Use the systemctl command to start the service and then check the status to see if it is running. If successful, the ***Active: active (running)*** will show in green. Once everything is running properly, enable the service to have it autostart on boot.
+
+``` console
+sudo systemctl start dcs.service
+sudo systemctl status dcs.service
+sudo systemctl enable dcs.service
+```
+### Attach to tmux session
+The service will spawn a tmux session that can be attached to to use the CLI of the DCS. To detach from the tmux session hit (ctrl and b) then d. Reference tmux manual for more functionality.
+
+``` console
+tmux ls
+tmux a
+```
