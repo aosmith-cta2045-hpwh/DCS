@@ -40,7 +40,7 @@ ElectricWaterHeater::ElectricWaterHeater (
 	Logger("INFO", GetLogPath ()) << "startup complete";
 	SetRatedImportPower (4500);
 	SetExportEnergy (0);
-	SetImportRamp (stoul(configs["EWH_rated_import_ramp"]));
+	SetImportRamp (stoul(configs["rated_import_ramp"]));
 	SetIdleLosses (100); //Based off of observed ambient losses
 	
 	ElectricWaterHeater::QueryProperties ();
@@ -182,7 +182,7 @@ void ElectricWaterHeater::Log () {
 	    << GetRatedImportEnergy () << "\t"
 	    << ElectricWaterHeater::GetRealImportPower () << "\t"
 	    << ucm_.GetOpState ();
-        last_utc_ = utc;
+        SetLastUTC(utc);
 }  // end Log
 
 // Display
